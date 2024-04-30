@@ -1,0 +1,41 @@
+from PyQt5 import QtCore
+import time
+from scipy.signal import freqz, lfilter, filtfilt, butter, zpk2tf
+
+class DataPlot:
+    def __init__(self, col, Y_list, mainwaindow, graph ):
+        self.Y_Coordinates = Y_list
+        self.color = col
+        self.ui = mainwaindow
+        self.Y = []
+        self.X_Points_Plotted = 0
+        self.speed = 10
+        self.FVC = 0
+        self.FEF = 0
+        self.PEFR = 0
+        self.Time = 0
+        self.graphwidget = graph
+        self.filteredYaxis= None
+        self.Plot_Signal()
+       
+    def Plot_Signal(self):
+        numerator, denominator = butter(2, 0.5, 'high', analog=False) #(Highpass Filter testing)
+        self.filteredYaxis = lfilter(numerator, denominator, self.Y_Coordinates)
+        self.data_line = self.ui.FilteredSignal.plot(self.timer, self.filteredYaxis[:1], pen="green")
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(100)
+        self.timer.timeout.connect(self.Update_Plot_Data)
+        self.timer.start()
+
+    def Update_Plot_Data(self):
+        self.X_Points_Plotted += self.speed
+            
+        self.ui.FilteredSignal.setLimits(xMin=0, xMax=float('inf'))
+            
+        self.data_line.setData(self.timer, self.filteredYaxis[0 : self.X_Points_Plotted + 1])  # Update the data.
+            
+        self.ui.FilteredSignal.getViewBox().setXRange(max(self.timer) - 1000, max(self.timer))
+            
+        self.Max_Value = max(self.Y_Coordinates[0 : self.X_Points_Plotted + 1]) #forward command
+    
+       

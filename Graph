@@ -1,0 +1,20 @@
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+import numpy as np
+import random
+import DataPlot, wfdb # type: ignore
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtCore import QUrl
+import time
+
+# noinspection PyTypeChecker
+class Graph:
+    def __init__(self, ui_mainwindow, graph_window=None):
+        self.UI_Window = ui_mainwindow
+        self.Graph_Window = graph_window
+        self.CurrentSignal = None
+        self.Y_Coordinates = None
+        self.count = 0
+ 
+
+
