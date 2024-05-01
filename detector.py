@@ -9,6 +9,7 @@ class MainWindow(QMainWindow, Ui_spirometry):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.signalobj.graphwidget = self.FlowGraph
 
         # Open the serial port
         self.serialInst = serial.Serial("COM3", 9600)
@@ -28,7 +29,7 @@ class MainWindow(QMainWindow, Ui_spirometry):
             try:
                 value_int = int(value)
                 # Update your widget with the received value
-                self.PEFR.setText(value_int)
+                self.signalobj.currentpoint = value_int
             except ValueError:
                 print("Invalid value received from Arduino:", value)
 

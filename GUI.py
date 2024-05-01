@@ -1,10 +1,14 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pyqtgraph import PlotWidget
+import DataPlot
+
 
 class Ui_spirometry(object):
         def __init__(self) -> None:
                self.currentReading = 0
+               self.signalobj = DataPlot()
+               
         def setupUi(self, spirometry):
                 spirometry.setObjectName("spirometry")
                 spirometry.resize(1079, 834)
@@ -51,7 +55,7 @@ class Ui_spirometry(object):
         "background-color: #33628d;\n"
         "border-radius:20px")
                 self.LungImagelabel.setText("")
-                self.LungImagelabel.setPixmap(QtGui.QPixmap("Images/RedLungs.png"))
+                self.LungImagelabel.setPixmap(QtGui.QPixmap("Images/EmptyLungs.png"))
                 self.LungImagelabel.setScaledContents(True)
                 self.LungImagelabel.setObjectName("LungImagelabel")
                 self.gridLayout.addWidget(self.LungImagelabel, 0, 0, 1, 1)
