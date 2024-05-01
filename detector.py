@@ -9,7 +9,9 @@ class MainWindow(QMainWindow, Ui_spirometry):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.signalobj.graphwidget = self.FlowGraph
+        self.signalobj.GUI = self
+        self.signalobj.Plot_Signal()
+        self.summationAvg = 0
 
         # Open the serial port
         self.serialInst = serial.Serial("COM3", 9600)
@@ -30,6 +32,10 @@ class MainWindow(QMainWindow, Ui_spirometry):
                 value_int = int(value)
                 # Update your widget with the received value
                 self.signalobj.currentpoint = value_int
+                self.FlowValue.setText(value + " mL/sec")
+                self.summationAvg+=value_int
+                self.FVC.setText(str(int(self.summationAvg* 10**-3)) + " L")
+                self.lungTransition(value_int)
             except ValueError:
                 print("Invalid value received from Arduino:", value)
 

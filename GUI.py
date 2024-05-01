@@ -1,13 +1,26 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pyqtgraph import PlotWidget
-import DataPlot
+from DataPlot import *
 
 
 class Ui_spirometry(object):
-        def __init__(self) -> None:
+        def __init__(self):
                self.currentReading = 0
                self.signalobj = DataPlot()
+               
+        def lungTransition(self, currentPoint):
+                if currentPoint == 0:
+                        self.LungImagelabel.setPixmap(QtGui.QPixmap("Images/EmptyLungs.png"))                        
+                elif currentPoint <= 500:
+                        self.LungImagelabel.setPixmap(QtGui.QPixmap("Images/GreenLungs.png"))
+                elif currentPoint > 500 and currentPoint <= 1300:
+                        self.LungImagelabel.setPixmap(QtGui.QPixmap("Images/OrangeLungs.png"))
+                elif currentPoint > 1300:
+                        self.LungImagelabel.setPixmap(QtGui.QPixmap("Images/RedLungs.png"))
+
+
+             
                
         def setupUi(self, spirometry):
                 spirometry.setObjectName("spirometry")
@@ -238,8 +251,8 @@ class Ui_spirometry(object):
                 sizePolicy.setVerticalStretch(0)
                 sizePolicy.setHeightForWidth(self.FlowValue.sizePolicy().hasHeightForWidth())
                 self.FlowValue.setSizePolicy(sizePolicy)
-                self.FlowValue.setMinimumSize(QtCore.QSize(145, 74))
-                self.FlowValue.setMaximumSize(QtCore.QSize(251, 16777215))
+                self.FlowValue.setMinimumSize(QtCore.QSize(200, 74))
+                self.FlowValue.setMaximumSize(QtCore.QSize(350, 16777215))
                 font = QtGui.QFont()
                 font.setPointSize(26)
                 font.setBold(True)
